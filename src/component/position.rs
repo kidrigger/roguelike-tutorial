@@ -1,23 +1,29 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
-pub struct Position {
-    pub x: i32,
-    pub y: i32,
-}
+use rltk::Point;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(transparent)]
+pub struct Position(pub Point);
 
 impl Position {
     pub fn new<T>(x: T, y: T) -> Self
     where
         T: Into<i32>,
     {
-        Self {
-            x: x.into(),
-            y: y.into(),
-        }
+        Self(Point::new(x, y))
     }
 }
 
-impl From<(i32, i32)> for Position {
-    fn from((x, y): (i32, i32)) -> Self {
-        Self { x, y }
+impl<T> From<(T, T)> for Position
+where
+    T: Into<i32>,
+{
+    fn from((x, y): (T, T)) -> Self {
+        Self(Point::new(x, y))
+    }
+}
+
+impl From<Point> for Position {
+    fn from(value: Point) -> Self {
+        Self(value)
     }
 }

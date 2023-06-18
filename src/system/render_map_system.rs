@@ -1,10 +1,21 @@
 use hecs::World;
-use rltk::Rltk;
+use rltk::{Point, Rltk};
 
 use crate::resource::Map;
 
-pub fn draw_map(ctx: &mut Rltk, ecs: &mut World) {
-    for (_id, map) in ecs.query_mut::<&Map>() {
-        map.draw(ctx);
+pub fn draw_map(ctx: &mut Rltk, _ecs: &mut World, map: &Map) {
+    for (index, tile) in map.tiles().iter().enumerate() {
+        let Point { x, y } = map.index_to_point(index);
+        if map.is_visible(x, y) {
+            ctx.set(x, y, tile.foreground(), tile.background(), tile.glyph());
+        } else if map.is_revealed(x, y) {
+            ctx.set(
+                x,
+                y,
+                tile.foreground().to_greyscale(),
+                tile.background(),
+                tile.glyph(),
+            );
+        }
     }
 }

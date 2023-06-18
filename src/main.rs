@@ -1,6 +1,6 @@
+use rltk::Rect;
 use roguelike::{
-    component::{Player, Position, Renderable},
-    resource::Map,
+    component::{Monster, Player, Position, Renderable, Viewshed},
     state::State,
 };
 
@@ -11,12 +11,37 @@ fn main() -> rltk::BError {
         .build()?;
 
     let mut gs = State::new();
+    let player_pos = gs.map().rooms().first().unwrap().center();
+
+    let monster_positions = gs
+        .map()
+        .rooms()
+        .iter()
+        .skip(1)
+        .map(Rect::center)
+        .collect::<Vec<_>>();
+
+    let mut rng = rltk::RandomNumberGenerator::new();
+    for monster_pos in monster_positions {
+        let roll = rng.roll_dice(1, 2);
+        let glyph = match roll {
+            1 => 'g',
+            _ => 'o',
+        };
+        gs.ecs_mut().spawn((
+            Monster,
+            Position::from(monster_pos),
+            Renderable::new(glyph, rltk::RED, None),
+            Viewshed::new(8),
+        ));
+    }
+
     gs.ecs_mut().spawn((
         Player,
-        Position::new(40, 25),
-        Renderable::new('☺', rltk::RED, None),
+        Position::from(player_pos),
+        Renderable::new('☺', rltk::YELLOW, None),
+        Viewshed::new(8),
     ));
-    gs.ecs_mut().spawn((Map::new_test(),));
 
     rltk::main_loop(context, gs)
 }

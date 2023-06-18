@@ -1,21 +1,22 @@
 use rltk::{BLACK, RGB};
 
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Copy, Clone, Default)]
 pub enum TileType {
+    #[default]
     Floor,
     Wall,
 }
 
 impl TileType {
     const FLOOR_COLOR: RGB = RGB {
-        r: 0.5,
-        g: 0.5,
-        b: 0.5,
+        r: 0.0,
+        g: 0.6,
+        b: 0.4,
     };
 
     const WALL_COLOR: RGB = RGB {
         r: 0.0,
-        g: 1.0,
+        g: 0.8,
         b: 0.0,
     };
 
