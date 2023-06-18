@@ -1,0 +1,11 @@
+[package]
+name = "roguelike"
+version = "0.1.0"
+authors = ["Anish Bhobe <anishbhobe@hotmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hecs = "0.10.3"
+rltk = "0.8.7"
