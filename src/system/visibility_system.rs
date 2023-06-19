@@ -3,10 +3,11 @@ use rltk::{field_of_view, Rltk};
 
 use crate::{
     component::{Player, Position, Viewshed},
-    resource::Map,
+    resource::{Map, Resources},
 };
 
-pub fn compute_visibilty(_ctx: &mut Rltk, ecs: &mut World, map: &mut Map) {
+pub fn compute_visibilty(_ctx: &mut Rltk, ecs: &mut World, res: &mut Resources) {
+    let map = res.fetch_mut::<Map>();
     for (_id, (pos, mut viewshed)) in ecs.query::<(&Position, &mut Viewshed)>().iter() {
         if viewshed.dirty {
             viewshed.visible_tiles.clear();

@@ -1,11 +1,14 @@
 use hecs::World;
 use rltk::{GameState, Rltk};
 
-use crate::{resource::Map, system};
+use crate::{
+    resource::{Map, Resources},
+    system,
+};
 
 pub struct State {
     ecs: World,
-    map: Map,
+    res: Resources,
 }
 
 impl GameState for State {
@@ -13,22 +16,23 @@ impl GameState for State {
         ctx.cls();
 
         let ecs = &mut self.ecs;
-        let map = &mut self.map;
-        system::control_player(ctx, ecs, map);
+        let res = &mut self.res;
+        system::control_player(ctx, ecs, res);
 
-        system::compute_visibilty(ctx, ecs, map);
+        system::compute_visibilty(ctx, ecs, res);
 
-        system::draw_map(ctx, ecs, map);
-        system::render(ctx, ecs, map);
+        system::draw_map(ctx, ecs, res);
+        system::render(ctx, ecs, res);
     }
 }
 
 impl State {
     pub fn new() -> Self {
-        Self {
-            ecs: World::new(),
-            map: Map::new(),
-        }
+        let ecs = World::new();
+        let mut res = Resources::new();
+        res.insert(Map::new());
+
+        Self { ecs, res }
     }
 
     pub fn ecs_mut(&mut self) -> &mut World {
@@ -39,12 +43,12 @@ impl State {
         &self.ecs
     }
 
-    pub fn map(&self) -> &Map {
-        &self.map
+    pub fn res(&self) -> &Resources {
+        &self.res
     }
 
-    pub fn map_mut(&mut self) -> &mut Map {
-        &mut self.map
+    pub fn res_mut(&mut self) -> &mut Resources {
+        &mut self.res
     }
 }
 
