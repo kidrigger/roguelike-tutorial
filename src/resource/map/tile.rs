@@ -39,4 +39,11 @@ impl TileType {
     pub fn background(&self) -> RGB {
         RGB::from(BLACK)
     }
+
+    pub fn is_opaque(&self) -> bool {
+        match self {
+            TileType::Floor => false,
+            TileType::Wall => true,
+        }
+    }
 }

@@ -23,6 +23,7 @@ impl GameState for State {
         } else {
             system::compute_visibilty(ctx, ecs, res);
             system::compute_monster_behavior(ctx, ecs, res);
+            system::index_map(ctx, ecs, res);
             res.fetch_mut::<RunState>().pause();
         }
 

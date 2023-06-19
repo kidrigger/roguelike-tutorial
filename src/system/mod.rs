@@ -1,9 +1,11 @@
+mod map_indexing_system;
 mod monster_ai_system;
 mod player_control_system;
 mod render_map_system;
 mod render_system;
 mod visibility_system;
 
+pub use map_indexing_system::index_map;
 pub use monster_ai_system::compute_monster_behavior;
 pub use player_control_system::control_player;
 pub use render_map_system::draw_map;
