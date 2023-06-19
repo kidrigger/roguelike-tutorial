@@ -2,7 +2,7 @@ use hecs::World;
 use rltk::{GameState, Rltk};
 
 use crate::{
-    resource::{Map, Resources},
+    resource::{Map, Resources, RunState},
     system,
 };
 
@@ -17,9 +17,14 @@ impl GameState for State {
 
         let ecs = &mut self.ecs;
         let res = &mut self.res;
-        system::control_player(ctx, ecs, res);
 
-        system::compute_visibilty(ctx, ecs, res);
+        if res.fetch::<RunState>().is_paused() {
+            system::control_player(ctx, ecs, res);
+        } else {
+            system::compute_visibilty(ctx, ecs, res);
+            system::compute_monster_behavior(ctx, ecs, res);
+            res.fetch_mut::<RunState>().pause();
+        }
 
         system::draw_map(ctx, ecs, res);
         system::render(ctx, ecs, res);

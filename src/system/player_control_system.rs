@@ -3,7 +3,7 @@ use rltk::{Rltk, VirtualKeyCode};
 
 use crate::{
     component::{Player, Position, Viewshed},
-    resource::{Map, PlayerPosition, Resources, TileType},
+    resource::{Map, PlayerPosition, Resources, RunState, TileType},
 };
 
 pub fn control_player(ctx: &mut Rltk, ecs: &mut World, res: &mut Resources) {
@@ -51,5 +51,6 @@ fn move_player((delta_x, delta_y): (i32, i32), ecs: &mut World, res: &mut Resour
 
     if let Some(pos) = player_pos {
         res.fetch_mut::<PlayerPosition>().0 = pos;
+        res.fetch_mut::<RunState>().run();
     }
 }

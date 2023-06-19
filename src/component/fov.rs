@@ -15,4 +15,8 @@ impl Viewshed {
             dirty: true,
         }
     }
+
+    pub fn is_visible(&self, point: &Point) -> bool {
+        self.visible_tiles.contains(point)
+    }
 }

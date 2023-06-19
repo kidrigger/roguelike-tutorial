@@ -1,7 +1,7 @@
 use rltk::Rect;
 use roguelike::{
     component::{Monster, Player, Position, Renderable, Viewshed},
-    resource::{Map, PlayerPosition},
+    resource::{Map, PlayerPosition, RunState},
     state::State,
 };
 
@@ -14,6 +14,7 @@ fn main() -> rltk::BError {
     let mut gs = State::new();
     let player_pos = gs.res().fetch::<Map>().rooms().first().unwrap().center();
     gs.res_mut().insert(PlayerPosition(player_pos));
+    gs.res_mut().insert(RunState::Running);
 
     let monster_positions = gs
         .res()
